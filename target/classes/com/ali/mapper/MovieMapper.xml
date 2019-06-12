@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ali.mapper.MovieMapper">
+	<select id="getMovieList" resultType="map">
+		select a.mid,a.mname,a.writer,a.price,a.mdate,b.tname,a.years,a.quyu,a.states from movie a,type b where a.tid=b.tid 
+		<if test="mname!='' and mname!=null">
+			and mname like '%${mname}%'
+		</if>
+		<if test="writer!='' and writer!=null">
+			and writer like '%${writer}%'
+		</if>
+		<if test="years!='' and years!=null">
+			and years like '%${years}%'
+		</if>
+		<if test="sydate!='' and sydate!=null">
+			and mdate between #{sydate} and #{jsdate}
+		</if>
+		<if test="minprice!='' and minprice!=null">
+			and price between #{minprice} and #{maxprice}
+		</if>
+		
+	</select>
+	<delete id="del">	
+		delete from movie where mid in(${value})
+	</delete>
+	<select id="xial" resultType="map">
+		select * from type
+	</select>
+	<insert id="add">	
+		insert into movie set mname=#{mname},writer=#{writer},price=#{price},mdate=#{mdate},tid=#{tid},years=#{years},quyu=#{quyu},states=#{states}
+	</insert>
+	<update id="update1">
+		update movie set states=1 where mid=${value}
+	</update>
+	<update id="update2">
+		update movie set states=0 where mid=${value}
+	</update>
+</mapper>
